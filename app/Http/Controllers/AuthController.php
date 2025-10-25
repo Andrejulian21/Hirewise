@@ -18,6 +18,7 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'role' => 'required|string', // por ejemplo: "candidate", "company", "admin"
+            'company_id' => 'required|exists:companies,id', // Validar que el company_id exista en la tabla companies
         ]);
 
         $user = User::create([
@@ -26,6 +27,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
+            'company_id' => $request->company_id,
             'is_active' => true,
         ]);
 

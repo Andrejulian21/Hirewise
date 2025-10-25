@@ -33,4 +33,14 @@ class JobPosting extends Model
         'published_at' => 'datetime',
         'closed_at'    => 'datetime',
     ];
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = (string) \Illuminate\Support\Str::ulid();
+            }
+        });
+    }
 }
