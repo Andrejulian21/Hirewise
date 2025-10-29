@@ -1,0 +1,204 @@
+@startuml
+' === Estilo clásico blanco y negro ===
+skinparam backgroundColor white
+skinparam class {
+    BackgroundColor white
+    ArrowColor Black
+    BorderColor Black
+}
+skinparam entity {
+    BackgroundColor white
+    BorderColor Black
+}
+skinparam note {
+    BackgroundColor #f9f9f9
+    BorderColor black
+}
+hide circle
+
+title **Modelo Entidad–Relación — Hirewise (Socialite + MVC)**
+
+' ==== ENTIDADES ====
+
+entity "roles" as roles {
+  *id : int <<PK>>
+  --
+  name : string
+  description : string
+}
+
+entity "users" as users {
+  *id : int <<PK>>
+  --
+  name : string
+  email : string
+  password : string?
+  provider_name : string?
+  provider_id : string?
+  role_id : int <<FK>>
+}
+
+entity "companies" as companies {
+  *id : int <<PK>>
+  --
+  user_id : int <<FK>>
+  name : string
+  description : text
+  website : string
+  logo : string
+  plan_id : int <<FK>>
+}
+
+entity "candidates" as candidates {
+  *id : int <<PK>>
+  --
+  user_id : int <<FK>>
+  summary : text
+  experience_years : int
+  education : string
+  cv_file : string
+  linkedin_url : string
+}
+
+entity "jobs" as jobs {
+  *id : int <<PK>>
+  --
+  company_id : int <<FK>>
+  title : string
+  description : text
+  requirements : text
+  location : string
+  salary_min : decimal
+  salary_max : decimal
+  status : string
+}
+
+entity "applications" as applications {
+  *id : int <<PK>>
+  --
+  candidate_id : int <<FK>>
+  job_id : int <<FK>>
+  status : string
+  score : float
+}
+
+entity "skills" as skills {
+  *id : int <<PK>>
+  --
+  name : string
+  category : string
+}
+
+entity "candidate_skill" as candidate_skill {
+  *candidate_id : int <<FK>>
+  *skill_id : int <<FK>>
+  level : int
+}
+
+entity "job_skill" as job_skill {
+  *job_id : int <<FK>>
+  *skill_id : int <<FK>>
+  importance : int
+}
+
+entity "match_scores" as match_scores {
+  *id : int <<PK>>
+  --
+  job_id : int <<FK>>
+  candidate_id : int <<FK>>
+  compatibility_score : float
+  analyzed_at : datetime
+}
+
+entity "plans" as plans {
+  *id : int <<PK>>
+  --
+  name : string
+  max_jobs : int
+  price : decimal
+  description : text
+}
+
+entity "payments" as payments {
+  *id : int <<PK>>
+  --
+  user_id : int <<FK>>
+  plan_id : int <<FK>>
+  amount : decimal
+  status : string
+  payment_date : datetime
+  reference_code : string
+}
+
+entity "notifications" as notifications {
+  *id : int <<PK>>
+  --
+  user_id : int <<FK>>
+  type : string
+  message : text
+  read_at : datetime?
+}
+
+entity "sessions_social" as sessions_social {
+  *id : int <<PK>>
+  --
+  user_id : int <<FK>>
+  provider_name : string
+  access_token : text
+  refresh_token : text?
+  expires_at : datetime
+}
+
+entity "permissions" as permissions {
+  *id : int <<PK>>
+  --
+  name : string
+  description : string
+}
+
+' ==== RELACIONES ====
+
+' Roles – Users
+roles ||--o{ users : "roles.id = users.role_id"
+
+' Users – Companies (1:1)
+users ||--|| companies : "users.id = companies.user_id"
+
+' Users – Candidates (1:1)
+users ||--|| candidates : "users.id = candidates.user_id"
+
+' Companies – Jobs
+companies ||--o{ jobs : "companies.id = jobs.company_id"
+
+' Jobs – Applications
+jobs ||--o{ applications : "jobs.id = applications.job_id"
+
+' Candidates – Applications
+candidates ||--o{ applications : "candidates.id = applications.candidate_id"
+
+' Candidates – Skills (N:M)
+candidates ||--o{ candidate_skill : "candidates.id = candidate_skill.candidate_id"
+skills ||--o{ candidate_skill : "skills.id = candidate_skill.skill_id"
+
+' Jobs – Skills (N:M)
+jobs ||--o{ job_skill : "jobs.id = job_skill.job_id"
+skills ||--o{ job_skill : "skills.id = job_skill.skill_id"
+
+' Match Scores
+jobs ||--o{ match_scores : "jobs.id = match_scores.job_id"
+candidates ||--o{ match_scores : "candidates.id = match_scores.candidate_id"
+
+' Companies – Plans
+plans ||--o{ companies : "plans.id = companies.plan_id"
+
+' Payments
+users ||--o{ payments : "users.id = payments.user_id"
+plans ||--o{ payments : "plans.id = payments.plan_id"
+
+' Notifications
+users ||--o{ notifications : "users.id = notifications.user_id"
+
+' Social Sessions
+users ||--|| sessions_social : "users.id = sessions_social.user_id"
+
+@enduml
