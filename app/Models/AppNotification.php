@@ -5,12 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Notification extends Model
+class AppNotification extends Model
 {
     use HasFactory;
 
+    protected $table = 'app_notifications';
+
     protected $fillable = [
-        'user_id', 'type', 'message', 'read_at'
+        'user_id',
+        'type',
+        'message',
+        'read_at',
+    ];
+
+    protected $casts = [
+        'read_at' => 'datetime',
     ];
 
     public function user()
