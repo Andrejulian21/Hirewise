@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('job_id')->constrained('jobs');
             $table->enum('status', ['applied', 'reviewing', 'interview', 'rejected', 'hired'])->default('applied');
             $table->float('score')->nullable();
+            $table->unique(['candidate_id','job_id']);
             $table->timestamps();
         });
     }

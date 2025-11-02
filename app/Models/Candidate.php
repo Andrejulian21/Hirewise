@@ -10,10 +10,17 @@ class Candidate extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'summary', 'experience_years',
-        'education', 'cv_file', 'linkedin_url'
+        'user_id',
+        'summary',
+        'experience_years',
+        'education',
+        'cv_file',
+        'linkedin_url',
     ];
 
+    protected $casts = [
+        'experience_years' => 'integer',
+    ];
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -26,10 +33,9 @@ class Candidate extends Model
 
     public function skills()
     {
-        return $this->belongsToMany(Skill::class, 'candidate_skill')
+        return $this->belongsToMany(\App\Models\Skill::class, 'candidate_skill')
                     ->withPivot('level');
     }
-
     public function matchScores()
     {
         return $this->hasMany(MatchScore::class);

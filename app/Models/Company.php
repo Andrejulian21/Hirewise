@@ -8,13 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Company extends Model
 {
-    use HasFactory;
     use HasFactory, SoftDeletes;
-    public $timestamps = true;
 
     protected $fillable = [
         'user_id', 'name', 'description',
-        'website', 'logo', 'plan_id'
+        'website', 'logo', 'plan_id',
     ];
 
     public function user()

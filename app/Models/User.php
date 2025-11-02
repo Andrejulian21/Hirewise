@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
-     use HasFactory, Notifiable, SoftDeletes, HasRoles;
+    use HasFactory, Notifiable, SoftDeletes, HasRoles;
 
     public $timestamps = true;
 
@@ -71,7 +71,6 @@ class User extends Authenticatable
         return $this->hasOne(SessionSocial::class);
     }
 
-    // Helpers útiles (opcionales)
     public function isEmpresa(): bool
     {
         return method_exists($this, 'hasRole') && $this->hasRole('Empresa');
