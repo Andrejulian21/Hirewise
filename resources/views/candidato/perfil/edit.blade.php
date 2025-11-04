@@ -1,44 +1,113 @@
-{{-- resources/views/candidato/perfil/edit.blade.php --}}
-@extends('layouts.app')
+@extends('layoutscandidatos.app')
 
 @section('content')
-    <h1>Mi Perfil</h1>
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
 
-    @if (session('status'))
-        <p style="color:green">{{ session('status') }}</p>
-    @endif
+                {{-- Título --}}
+                <div class="mb-3">
+                    <h1 class="h3 mb-1">Editar perfil</h1>
+                    <p class="text-muted mb-0">Actualiza tu información profesional para mejorar tu compatibilidad.</p>
+                </div>
 
-    @if ($errors->any())
-        <ul style="color:red">
-            @foreach ($errors->all() as $e)
-                <li>{{ $e }}</li>
-            @endforeach
-        </ul>
-    @endif
+                {{-- Alertas --}}
+                @if (session('status'))
+                    <div class="alert alert-success">{{ session('status') }}</div>
+                @endif
 
-    <form method="POST" action="{{ route('candidato.perfil.update') }}" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $e)
+                                <li>{{ $e }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-        <textarea name="summary" placeholder="Resumen">{{ old('summary', $candidate->summary) }}</textarea>
+                {{-- Card --}}
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4">
 
-        <input type="number" name="experience_years" value="{{ old('experience_years', $candidate->experience_years) }}"
-            min="0">
+                        <form method="POST" action="{{ route('candidato.perfil.update') }}" enctype="multipart/form-data"
+                            id="frmPerfil">
+                            @csrf
+                            @method('PUT')
 
-        <input type="text" name="education" value="{{ old('education', $candidate->education) }}"
-            placeholder="Educación">
+                            {{-- Resumen --}}
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold" for="summary">Resumen profesional</label>
+                                <textarea class="form-control" id="summary" name="summary" rows="4"
+                                    placeholder="Cuéntanos en pocas líneas tu experiencia y fortalezas.">{{ old('summary', $candidate->summary) }}</textarea>
+                            </div>
 
-        <input type="url" name="linkedin_url" placeholder="https://www.linkedin.com/in/tu-usuario"
-            value="{{ old('linkedin_url', $candidate->linkedin_url) }}" pattern="https?://.*">
-        <script>
-            document.getElementById('linkedin').addEventListener('blur', e => {
+                            {{-- Años de experiencia --}}
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold" for="experience_years">Años de experiencia</label>
+                                <input class="form-control" type="number" id="experience_years" name="experience_years"
+                                    value="{{ old('experience_years', $candidate->experience_years) }}" min="0">
+                            </div>
+
+                            {{-- Educación --}}
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold" for="education">Educación</label>
+                                <input class="form-control" type="text" id="education" name="education"
+                                    value="{{ old('education', $candidate->education) }}"
+                                    placeholder="Ej: Ingeniería de Sistemas">
+                            </div>
+
+                            {{-- LinkedIn --}}
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold" for="linkedin">URL de LinkedIn</label>
+                                <input class="form-control" type="url" id="linkedin" name="linkedin_url"
+                                    placeholder="https://www.linkedin.com/in/tu-usuario"
+                                    value="{{ old('linkedin_url', $candidate->linkedin_url) }}" pattern="https?://.*">
+                                <div class="form-text">Debe iniciar con http:// o https:// (se añade automáticamente si lo
+                                    omites).</div>
+                            </div>
+
+                            {{-- CV --}}
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold" for="cv_file">CV (PDF/DOC/DOCX)</label>
+                                <input class="form-control" type="file" id="cv_file" name="cv_file"
+                                    accept=".pdf,.doc,.docx">
+                                @if ($candidate->cv_file)
+                                    <div class="form-text mt-1">
+                                        Archivo actual: <a href="{{ route('candidato.cv.ver', $candidate->id) }}"
+                                            target="_blank" class="btn btn-sm btn-outline-primary">
+                                            Ver CV
+                                        </a>
+                                    </div>
+                                @endif
+                            </div>
+
+                            {{-- Acciones --}}
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary px-4">Guardar</button>
+                                <a href="{{ route('candidato.perfil.show') }}"
+                                    class="btn btn-outline-secondary">Cancelar</a>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {{-- Normaliza LinkedIn si el usuario olvida http/https --}}
+    <script>
+        (function() {
+            const input = document.getElementById('linkedin');
+            if (!input) return;
+            input.addEventListener('blur', function(e) {
                 const v = e.target.value.trim();
-                if (v && !/^https?:\/\//i.test(v)) e.target.value = 'https://' + v;
+                if (v && !/^https?:\/\//i.test(v)) {
+                    e.target.value = 'https://' + v;
+                }
             });
-        </script>
-
-        <input type="file" name="cv_file" accept=".pdf,.doc,.docx">
-
-        <button type="submit">Guardar</button>
-    </form>
+        })();
+    </script>
 @endsection

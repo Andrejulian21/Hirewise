@@ -1,0 +1,93 @@
+:root{
+  --bg:#ffffff;
+  --text:#0f172a;              /* azul muy oscuro */
+  --muted:#6b7280;             /* gris suave */
+  --primary:#0b5ed7;           /* azul bootstrap */
+  --primary-700:#0a47a3;
+  --accent:#6a5acd;            /* morado suave */
+  --accent-2:#2dd4bf;          /* celeste/teal */
+}
+
+*{ box-sizing:border-box }
+html,body{ height:100% }
+body.app-body{
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  color:var(--text);
+  background:var(--bg);
+}
+
+/* navbar */
+.navbar .brand-dot{
+  width:10px;height:10px;border-radius:50%;
+  background: linear-gradient(135deg,var(--accent),var(--accent-2));
+  display:inline-block;
+}
+.navbar .nav-link{ color:var(--text) }
+.navbar .nav-link:hover{ color:var(--primary) }
+
+/* secciones */
+.section-padding{ padding: 6rem 0 5rem }
+.hero{ padding-top: calc(6rem + 48px) } /* gap con navbar fija */
+
+/* hero */
+.text-gradient{
+  background: linear-gradient(135deg,var(--primary),var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.accent-badge{
+  border:1px solid rgba(13,110,253,.2);
+}
+.hero-card{
+  background: radial-gradient(1200px 400px at -10% -30%, rgba(13,110,253,.08), transparent 60%),
+              radial-gradient(500px 300px at 120% 120%, rgba(106,90,205,.10), transparent 50%),
+              #fff;
+}
+.hero-list{
+  list-style:none;padding:0;margin:0;
+}
+.hero-list li{
+  position:relative;padding-left:1.5rem;margin:.35rem 0;color:var(--muted);
+}
+.hero-list li::before{
+  content:"";position:absolute;left:0;top:.45rem;width:.65rem;height:.65rem;border-radius:50%;
+  background: linear-gradient(135deg,var(--primary),var(--accent-2));
+  box-shadow:0 0 0 3px rgba(13,110,253,.12);
+}
+
+/* features */
+.icon-bubble{
+  width:44px;height:44px;border-radius:12px;
+  display:grid;place-items:center;
+  background:rgba(13,110,253,.08);
+  color:var(--primary);
+  font-size:1.15rem;
+}
+.feature.card, .price.card, .steps-card{ border: none; }
+
+/* chips / pequeñas etiquetas */
+.chip{
+  padding:.35rem .6rem;border-radius:999px;
+  background:rgba(13,110,253,.08);color:var(--primary);
+}
+
+/* pasos */
+.steps{ margin:0; padding-left:1.25rem }
+.steps li{ margin:.4rem 0; color:var(--muted) }
+.steps li strong{ color:var(--text) }
+
+/* footer */
+footer{ background:#fff }
+
+/* botones */
+.btn-primary{
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.btn-primary:hover{ background: var(--primary-700); border-color: var(--primary-700) }
+.btn-outline-primary{ border-color: var(--primary); color: var(--primary) }
+.btn-outline-primary:hover{ background:var(--primary); color:#fff }
+
+/* helpers */
+.bg-light{ background:#f8fafc !important }

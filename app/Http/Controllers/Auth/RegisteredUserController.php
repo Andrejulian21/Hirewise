@@ -74,6 +74,6 @@ class RegisteredUserController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->route('dashboard')->with('status','Registro exitoso');
+        return redirect()->route('jobs.public')->with('status','Registro exitoso');
     }
 }

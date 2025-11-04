@@ -23,7 +23,7 @@ class AuthenticatedSessionController extends Controller
 
         if (Auth::attempt(['email'=>$credentials['email'], 'password'=>$credentials['password']], $request->boolean('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended(route('dashboard'));
+            return redirect()->intended(route('jobs.public'));
         }
 
         return back()->withErrors([

@@ -5,14 +5,14 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
 use App\Http\Middleware\EnsureRole;
+use App\Http\Middleware\EnsureHasCompany;
 
 return Application::configure(basePath: __DIR__ . '/../')
 
-    // 1) REGISTRO DE MIDDLEWARES (antes o al menos no después de cachear nada)
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'ensure.role' => EnsureRole::class,
-            // puedes dejar también los de Spatie, no molestan
+            'has.company' => EnsureHasCompany::class,
         ]);
     })
 

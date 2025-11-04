@@ -1,0 +1,50 @@
+:root{
+  --text:#0f172a;
+  --muted:#6b7280;
+  --primary:#0b5ed7;
+  --accent:#6a5acd;
+  --accent-2:#2dd4bf;
+}
+
+.auth-wrap{
+  padding-top: calc(6rem + 48px);
+  padding-bottom: 5rem;
+}
+
+.auth-hero{
+  background:
+    radial-gradient(1200px 500px at -10% -20%, rgba(13,110,253,.10), transparent 60%),
+    radial-gradient(500px 300px at 120% 120%, rgba(106,90,205,.10), transparent 50%),
+    #fff;
+}
+
+.accent-badge{ border:1px solid rgba(13,110,253,.2) }
+
+.auth-card{ border-radius: 1rem }
+
+.separator{
+  position:relative;text-align:center;color:var(--muted);font-size:.9rem;
+}
+.separator::before,
+.separator::after{
+  content:"";height:1px;background:#e5e7eb;width:45%;position:absolute;top:50%;
+}
+.separator::before{ left:0 }
+.separator::after{ right:0 }
+.separator span{
+  background:#fff;padding:0 .75rem;position:relative;z-index:1;
+}
+
+.google-btn{
+  display:flex;align-items:center;justify-content:center;
+  gap:.35rem;
+}
+
+/* Botón mostrar/ocultar contraseña */
+.toggle-pass .toggle-text{ font-size:.9rem }
+.toggle-pass{ border-color:#e5e7eb }
+
+/* Pequeños refinamientos */
+.form-control:focus{
+  box-shadow: 0 0 0 .25rem rgba(13,110,253,.15);
+}

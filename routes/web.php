@@ -13,13 +13,13 @@ Route::get('/', function () {
 });
 
 /** Formularios */
-Route::get('/login', [AuthenticatedSessionController::class,'create'])->middleware('guest')->name('login');
-Route::get('/register', [RegisteredUserController::class,'create'])->middleware('guest')->name('register');
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])->middleware('guest')->name('login');
+Route::get('/register', [RegisteredUserController::class, 'create'])->middleware('guest')->name('register');
 
 /** Registro propio + Login propio */
-Route::post('/register', [RegisteredUserController::class,'store'])->middleware('guest')->name('register.store');
-Route::post('/login', [AuthenticatedSessionController::class,'store'])->middleware('guest')->name('login.store');
-Route::post('/logout', [AuthenticatedSessionController::class,'destroy'])->middleware('auth')->name('logout');
+Route::post('/register', [RegisteredUserController::class, 'store'])->middleware('guest')->name('register.store');
+Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('guest')->name('login.store');
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth')->name('logout');
 
 
 Route::get('/login', fn() => view('auth.login'))->name('login');
@@ -43,6 +43,8 @@ Route::get('/dashboard', function () {
 use App\Http\Controllers\Company\JobController;
 use App\Http\Controllers\Candidate\ProfileController;
 use App\Http\Controllers\Candidate\AplicationController;
+use App\Http\Controllers\Candidate\CvController;
+use App\Http\Controllers\Company\CompanyAccountController;
 
 Route::get('/_debug-mw', function () {
     return app('router')->getMiddleware();
@@ -51,36 +53,55 @@ Route::get('/_debug-mw', function () {
 Route::middleware(['auth'])->group(function () {
 
     // -------- Empresa: CRUD Vacantes ----------
-    Route::middleware(['auth','ensure.role:Empresa'])
+    Route::middleware(['auth', 'ensure.role:Empresa'])
         ->prefix('empresa')->name('empresa.')
         ->group(function () {
-            Route::resource('jobs', \App\Http\Controllers\Company\JobController::class);
+            // gestionar/crear empresa
+            Route::get('company',    [CompanyAccountController::class, 'show'])->name('company.show');
+            Route::post('company',   [CompanyAccountController::class, 'store'])->name('company.store');
+            Route::put('company',    [CompanyAccountController::class, 'update'])->name('company.update');
+            Route::delete('company', [CompanyAccountController::class, 'destroy'])->name('company.destroy');
+
+            // ahora sí: todo lo que requiera tener company
+            Route::middleware(['ensure.role:Empresa'])->group(function () {
+                Route::resource('jobs', \App\Http\Controllers\Company\JobController::class);
+            });
         });
 
     // -------- Candidato: Perfil + Postular ----------
     Route::middleware(['auth', 'ensure.role:Candidato'])
         ->prefix('candidato')->name('candidato.')
         ->group(function () {
-            Route::get('perfil', [ProfileController::class, 'edit'])->name('perfil.edit');
+            Route::get('perfil', [ProfileController::class, 'show'])->name('perfil.show');
+            Route::get('perfil/editar', [ProfileController::class, 'edit'])->name('perfil.edit');
             Route::put('perfil', [ProfileController::class, 'update'])->name('perfil.update');
 
             Route::post('aplicar/{job}', [AplicationController::class, 'store'])->name('aplicar');
-    });
+        });
 
     // -------- Listado público (ambos) ----------
     Route::get('/jobs', [JobController::class, 'publicIndex'])->name('jobs.public');
     Route::get('/jobs/{job}', [JobController::class, 'publicShow'])->name('jobs.show');
 });
 
+Route::get('/candidato/cv/{candidate}', [CvController::class, 'ver'])
+    ->middleware(['auth'])
+    ->name('candidato.cv.ver');
+
+
 use App\Http\Controllers\DashboardController;
 
-Route::middleware(['auth','ensure.role:Empresa'])
-    ->get('/empresa/dashboard', [DashboardController::class,'empresa'])
-    ->name('empresa.dashboard');
+Route::middleware(['auth', 'ensure.role:Empresa'])
+    ->get('/empresa/dashboard', [DashboardController::class, 'empresa'])
+    ->name('empresa.jobs.dashboard');
 
-Route::middleware(['auth','ensure.role:Candidato'])
-    ->get('/candidato/dashboard', [DashboardController::class,'candidato'])
-    ->name('candidato.dashboard');
+Route::middleware(['auth', 'ensure.role:Candidato'])
+    ->get('/candidato/dashboard', [DashboardController::class, 'candidato'])
+    ->name('candidatos.dashboard');
+
+
+
+
 /*Route::get('/whoami', function () {
     $u = Auth::user();
     return [
@@ -90,4 +111,3 @@ Route::middleware(['auth','ensure.role:Candidato'])
         'first_role_in_session' => session('first_role'),
     ];
 }); */
-

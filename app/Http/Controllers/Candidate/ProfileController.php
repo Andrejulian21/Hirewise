@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
+    public function show()
+    {
+        $candidate = \App\Models\Candidate::firstOrCreate(['user_id' => Auth::id()]);
+        return view('candidatos.perfil', compact('candidate')); // usa tu vista de perfil (read-only)
+    }
     public function edit()
     {
         $candidate = Candidate::firstOrCreate(['user_id' => Auth::id()]);
@@ -22,14 +27,16 @@ class ProfileController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('cv_file')) {
-            // asegúrate de tener el enlace de storage
-            // php artisan storage:link
+
             $data['cv_file'] = $request->file('cv_file')->store('cv', 'public');
         }
 
         $candidate->fill($data);
         $candidate->save();
 
-        return back()->with('status', 'Perfil actualizado.');
+        return redirect()
+            ->route('candidato.perfil.show')
+            ->with('status', 'Perfil actualizado.');
     }
+    
 }

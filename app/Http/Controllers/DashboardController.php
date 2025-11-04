@@ -30,7 +30,7 @@ class DashboardController extends Controller
             ->with(['candidate.user','job'])
             ->latest()->limit(5)->get();
 
-        return view('empresa.dashboard', compact(
+        return view('empresa.jobs.dashboard', compact(
             'jobsCount','openJobs','appsCount','avgScore','topJobs','lastApps'
         ));
     }
@@ -46,6 +46,6 @@ class DashboardController extends Controller
             ->with(['job.company'])
             ->latest()->limit(5)->get();
 
-        return view('candidato.dashboard', compact('totalApps','avgScore','lastApps'));
+        return view('candidatos.dashboard', compact('totalApps','avgScore','lastApps'));
     }
 }

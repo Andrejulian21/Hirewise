@@ -48,9 +48,9 @@ class JobController extends Controller
         $company = Company::where('user_id', Auth::id())->firstOrFail();
         $company->jobs()->create($request->validated());
 
-        return to_route('empresa.jobs.index')->with('status','Vacante creada.');
+        return to_route('empresa.jobs.index')->with('status', 'Vacante creada.');
     }
-    
+
 
     public function edit(Job $job)
     {
@@ -63,15 +63,21 @@ class JobController extends Controller
         $this->authorize('update', $job);
         $job->update($request->validated());
 
-        return redirect()->route('empresa.jobs.index')->with('status','Vacante actualizada.');
+        return redirect()->route('empresa.jobs.index')->with('status', 'Vacante actualizada.');
     }
 
     public function destroy(Job $job)
     {
         $this->authorize('delete', $job);
-        $job->delete();
 
-        return back()->with('status','Vacante eliminada.');
+        if (request()->boolean('force')) {
+            // Borrado físico en DB
+            $job->forceDelete();
+            return back()->with('status', 'Vacante eliminada.');
+        }
+
+        // Borrado lógico (soft delete)
+        $job->delete();
+        return back()->with('status', 'Vacante eliminada (papelera).');
     }
 }
-

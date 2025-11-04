@@ -91,7 +91,7 @@ class SocialAuthController extends Controller
         request()->session()->regenerate();
         session()->forget('first_role');
 
-        return redirect()->intended(route('dashboard'));
+        return redirect()->intended(route('jobs.public'));
     }
 
     public function logout()
