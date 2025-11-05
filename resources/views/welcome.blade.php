@@ -8,7 +8,7 @@
         <div class="col-lg-6">
           <span class="badge rounded-pill text-bg-light-subtle accent-badge mb-3">Automatiza tu selección</span>
           <p>
-            
+            a
           </p>
           <h1 class="display-5 fw-bold lh-tight mb-3">
             Contrata mejor y más rápido con <span class="text-gradient">IA</span>

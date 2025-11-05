@@ -100,7 +100,13 @@ Route::middleware(['auth', 'ensure.role:Candidato'])
     ->name('candidatos.dashboard');
 
 
+use App\Http\Controllers\Company\EmployerCandidateController;
 
+Route::middleware(['auth','ensure.role:Empresa'])->prefix('empresa')->name('empresa.')->group(function () {
+    Route::get('candidatos/{candidate}', [EmployerCandidateController::class,'show'])
+        ->whereNumber('candidate')
+        ->name('candidatos.show');
+});
 
 /*Route::get('/whoami', function () {
     $u = Auth::user();

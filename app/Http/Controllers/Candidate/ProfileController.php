@@ -7,6 +7,8 @@ use App\Http\Requests\UpdateCandidateProfileRequest;
 use App\Models\Candidate;
 use App\Models\Skill;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+
 
 class ProfileController extends Controller
 {
@@ -31,6 +33,13 @@ class ProfileController extends Controller
             $data['cv_file'] = $request->file('cv_file')->store('cv', 'public');
         }
 
+        if ($request->hasFile('photo')) {
+            if ($candidate->photo_path) {
+                Storage::disk('public')->delete($candidate->photo_path);
+            }
+            $data['photo_path'] = $request->file('photo')->store('avatars', 'public');
+        }
+
         $candidate->fill($data);
         $candidate->save();
 
@@ -38,5 +47,4 @@ class ProfileController extends Controller
             ->route('candidato.perfil.show')
             ->with('status', 'Perfil actualizado.');
     }
-    
 }

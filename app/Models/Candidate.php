@@ -16,6 +16,7 @@ class Candidate extends Model
         'education',
         'cv_file',
         'linkedin_url',
+        'photo_path',
     ];
 
     protected $casts = [
@@ -40,4 +41,12 @@ class Candidate extends Model
     {
         return $this->hasMany(MatchScore::class);
     }
+
+    public function getPhotoUrlAttribute(): string
+{
+    if ($this->photo_path) {
+        return \Illuminate\Support\Facades\Storage::url($this->photo_path);
+    }
+    return 'https://ui-avatars.com/api/?name='.urlencode(optional($this->user)->name).'&background=0D1B2A&color=fff';
+}
 }

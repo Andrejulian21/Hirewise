@@ -35,6 +35,18 @@
                             @csrf
                             @method('PUT')
 
+                            <div class="mb-3">
+                                <label class="form-label">Foto de perfil</label>
+                                <div class="d-flex align-items-center gap-3">
+                                    <img src="{{ $candidate->photo_url }}" alt="Foto" class="rounded-circle"
+                                        width="72" height="72">
+                                    <input type="file" name="photo" accept="image/*" class="form-control w-auto">
+                                </div>
+                                @error('photo')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
                             {{-- Resumen --}}
                             <div class="mb-3">
                                 <label class="form-label fw-semibold" for="summary">Resumen profesional</label>

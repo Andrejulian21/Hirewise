@@ -76,13 +76,7 @@
                                     </div>
                                 </div>
 
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="remember" name="remember">
-                                        <label class="form-check-label" for="remember">Recuérdame</label>
-                                    </div>
-                                    <!-- Si luego añades "¿Olvidaste tu contraseña?" puedes poner aquí el link -->
-                                </div>
+
 
                                 <button type="submit" class="btn btn-primary btn-lg w-100">Entrar</button>
                             </form>

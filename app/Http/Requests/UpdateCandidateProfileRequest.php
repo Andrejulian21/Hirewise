@@ -19,6 +19,7 @@ class UpdateCandidateProfileRequest extends FormRequest
             'education'        => ['nullable','string','max:200'],
             'linkedin_url'     => ['nullable','url','max:200'],
             'cv_file'          => ['nullable','file','mimes:pdf,doc,docx','max:5120'],
+            'photo'            => ['nullable','image','mimes:jpg,jpeg,png,webp','max:2048'],
 
             'skills'           => ['nullable','array'],
             'skills.*'         => ['nullable','integer','min:1','max:5'],

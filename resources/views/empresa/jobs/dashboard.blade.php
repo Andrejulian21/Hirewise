@@ -106,7 +106,8 @@
                                     <th>Candidato</th>
                                     <th>Vacante</th>
                                     <th>Score</th>
-                                    <th>CV</th> {{-- NUEVO --}}
+                                    <th>Perfil</th>
+                                    <th>CV</th>
                                     <th>Fecha</th>
                                 </tr>
                             </thead>
@@ -134,14 +135,22 @@
                                             $cand = $a->candidate ?? null;
                                         @endphp
                                         <td>
-                                            @if ($cand?->cv_file)
-                                                <a href="{{ route('candidato.cv.ver', $candidate->id) }}" target="_blank"
-                                                    class="btn btn-sm btn-outline-primary">
-                                                    Ver CV
-                                                </a>
-                                            @else
-                                                <span class="text-muted">No adjunto</span>
-                                            @endif
+                                            <a href="{{ route('empresa.candidatos.show', $a->candidate_id) }}"
+                                                class="text-decoration-none">
+                                                {{ optional($a->candidate->user)->name }}
+                                            </a>
+                                        </td>
+                                        <td>
+
+                                            <div class="small">
+                                                @if ($cand?->cv_file)
+                                                    <a href="{{ route('candidato.cv.ver', $candidate->id) }}"
+                                                        target="_blank" class="btn btn-sm btn-outline-primary">
+                                                        Ver CV
+                                                    </a>
+                                                @else
+                                                    <span class="text-muted">No adjunto</span>
+                                                @endif
                                         </td>
                                         <td class="text-nowrap text-muted">{{ $a->created_at->format('Y-m-d H:i') }}</td>
                                     </tr>

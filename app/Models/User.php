@@ -22,6 +22,7 @@ class User extends Authenticatable
         'provider_name',
         'provider_id',
         'phone',
+        'remember_token', 
     ];
 
     protected $hidden = [
