@@ -10,7 +10,7 @@ class EmployerCandidateController extends Controller
     public function show(Candidate $candidate)
     {
         // Carga relaciones útiles
-        $candidate->load(['user','skills']); // si tienes relación skills
+        $candidate->load(['user','skills']);
         return view('empresa.candidatos.show', compact('candidate'));
     }
 }

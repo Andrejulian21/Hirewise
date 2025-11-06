@@ -98,6 +98,7 @@
         <div class="card shadow-sm border-0">
             <div class="card-body">
                 <h2 class="h5 mb-3">Últimas postulaciones</h2>
+
                 @if ($lastApps->count())
                     <div class="table-responsive">
                         <table class="table align-middle table-hover mb-0">
@@ -105,7 +106,7 @@
                                 <tr>
                                     <th>Candidato</th>
                                     <th>Vacante</th>
-                                    <th>Score</th>
+                                    <th>Score / Comentario</th>
                                     <th>Perfil</th>
                                     <th>CV</th>
                                     <th>Fecha</th>
@@ -117,41 +118,59 @@
                                         $candidate = $a->candidate ?? null;
                                         $candidateUser = $candidate?->user;
                                         $cvPath = $candidate?->cv_file;
-                                        // URL pública del CV si existe (requiere storage:link)
                                         $cvUrl = $cvPath ? asset('storage/' . $cvPath) : null;
+
+                                        // Traer el comentario más reciente de match_scores
+                                        $ms = \App\Models\MatchScore::where('job_id', $a->job_id)
+                                            ->where('candidate_id', $a->candidate_id)
+                                            ->latest('analyzed_at')
+                                            ->first();
                                     @endphp
+
                                     <tr>
                                         <td>{{ $candidateUser->name ?? '—' }}</td>
+
                                         <td>{{ $a->job->title }}</td>
-                                        <td>
+
+                                        <td style="max-width: 380px;">
                                             @if (is_numeric($a->score))
-                                                <span
-                                                    class="badge bg-primary-subtle text-primary">{{ (int) round($a->score) }}%</span>
+                                                <div class="d-flex flex-column">
+                                                    <span
+                                                        class="badge bg-primary-subtle text-primary align-self-start mb-1">
+                                                        {{ (int) round($a->score) }}%
+                                                    </span>
+
+                                                    @if ($ms && filled($ms->comment))
+                                                        <span class="small text-muted" title="{{ $ms->comment }}">
+                                                            {{ \Illuminate\Support\Str::limit($ms->comment, 120) }}
+                                                        </span>
+                                                    @else
+                                                        <span class="small text-muted">Sin comentario</span>
+                                                    @endif
+                                                </div>
                                             @else
                                                 <span class="text-muted">—</span>
                                             @endif
                                         </td>
-                                        @php
-                                            $cand = $a->candidate ?? null;
-                                        @endphp
+
                                         <td>
                                             <a href="{{ route('empresa.candidatos.show', $a->candidate_id) }}"
                                                 class="text-decoration-none">
-                                                {{ optional($a->candidate->user)->name }}
+                                                {{ optional($a->candidate->user)->name ?? 'Ver perfil' }}
                                             </a>
                                         </td>
-                                        <td>
 
-                                            <div class="small">
-                                                @if ($cand?->cv_file)
-                                                    <a href="{{ route('candidato.cv.ver', $candidate->id) }}"
-                                                        target="_blank" class="btn btn-sm btn-outline-primary">
-                                                        Ver CV
-                                                    </a>
-                                                @else
-                                                    <span class="text-muted">No adjunto</span>
-                                                @endif
+                                        <td>
+                                            @if ($candidate?->cv_file)
+                                                <a href="{{ route('candidato.cv.ver', $candidate->id) }}" target="_blank"
+                                                    class="btn btn-sm btn-outline-primary">
+                                                    Ver CV
+                                                </a>
+                                            @else
+                                                <span class="text-muted small">No adjunto</span>
+                                            @endif
                                         </td>
+
                                         <td class="text-nowrap text-muted">{{ $a->created_at->format('Y-m-d H:i') }}</td>
                                     </tr>
                                 @endforeach

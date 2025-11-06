@@ -10,7 +10,11 @@ class MatchScore extends Model
     use HasFactory;
 
     protected $fillable = [
-        'job_id', 'candidate_id', 'compatibility_score', 'analyzed_at'
+        'job_id',
+        'candidate_id',
+        'compatibility_score',
+        'comment',       
+        'analyzed_at',
     ];
 
     public function job()

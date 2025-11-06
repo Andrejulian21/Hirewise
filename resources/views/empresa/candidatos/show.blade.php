@@ -44,15 +44,5 @@
     </div>
   </div>
 
-  @if($candidate->skills?->count())
-    <div class="card shadow-sm border-0 mt-3">
-      <div class="card-body">
-        <h2 class="h6 mb-2">Habilidades</h2>
-        @foreach($candidate->skills as $skill)
-          <span class="badge text-bg-light me-1 mb-1">{{ $skill->name }}</span>
-        @endforeach
-      </div>
-    </div>
-  @endif
 </div>
 @endsection
