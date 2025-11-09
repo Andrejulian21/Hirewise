@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Candidate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateCandidateProfileRequest;
 use App\Models\Candidate;
-use App\Models\Skill;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 

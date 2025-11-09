@@ -46,7 +46,7 @@ class AplicationController extends Controller
                 'score'        => null,
             ]);
 
-            // 5) Preparar payloads para el servicio de match (SIN skills)
+            // 5) Preparar payloads para el servicio de match 
             // Lee y limita texto del CV si existe (el CvTextExtractor debe tolerar null/archivo no soportado)
             $cvText = $cvx->fromPublicPath($candidate->cv_file);
 
