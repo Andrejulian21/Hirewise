@@ -37,7 +37,7 @@
                                 <i class="bi bi-briefcase-fill"></i>
                             </div>
                             <div>
-                                <div class="h4 mb-0 fw-bold">{{ $jobs->total() }}</div>
+                                <div class="h4 mb-0 fw-bold">{{ $jobs->count() }}</div>
                                 <small class="text-muted">Total vacantes</small>
                             </div>
                         </div>
@@ -169,10 +169,7 @@
                 </div>
             </div>
 
-            {{-- Paginación --}}
-            <div class="mt-4 d-flex justify-content-center">
-                {{ $jobs->links() }}
-            </div>
+
 
         @else
             {{-- Estado vacío --}}

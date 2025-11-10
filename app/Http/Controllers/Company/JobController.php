@@ -19,7 +19,7 @@ class JobController extends Controller
     public function index()
     {
         $company = Company::where('user_id', Auth::id())->firstOrFail();
-        $jobs = $company->jobs()->latest()->paginate(10);
+        $jobs = $company->jobs()->latest()->get();
 
         return view('empresa.jobs.index', compact('jobs'));
     }
@@ -27,7 +27,7 @@ class JobController extends Controller
     // Público
     public function publicIndex()
     {
-        $jobs = Job::with('company')->where('status', 'open')->latest()->paginate(10);
+        $jobs = Job::with('company')->where('status', 'open')->latest()->get();
         return view('empresa.jobs.public-index', compact('jobs'));
     }
 

@@ -168,7 +168,7 @@
                             {{-- CV --}}
                             <div class="mb-5">
                                 <label class="form-label fw-semibold" for="cv_file">
-                                    <i class="bi bi-file-earmark-pdf me-2"></i>Currículum vitae (PDF/DOC/DOCX)
+                                    <i class="bi bi-file-earmark-pdf me-2"></i>Currículum vitae (PDF)
                                 </label>
                                 <input class="form-control" 
                                        type="file" 
@@ -191,7 +191,7 @@
                                 @else
                                     <small class="form-text text-muted d-block mt-2">
                                         <i class="bi bi-upload me-1"></i>
-                                        Sube tu CV para aumentar tus oportunidades. Formatos: PDF, DOC o DOCX.
+                                        Sube tu CV para aumentar tus oportunidades. Formato PDF.
                                     </small>
                                 @endif
                             </div>

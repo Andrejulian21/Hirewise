@@ -47,7 +47,7 @@
             <i class="bi bi-briefcase"></i>
           </div>
           <div>
-            <div class="h4 mb-0 fw-bold">{{ $jobs->total() }}</div>
+            <div class="h4 mb-0 fw-bold">{{ $jobs->count() }}</div>
             <small class="text-muted">Vacantes disponibles</small>
           </div>
         </div>
@@ -61,7 +61,7 @@
             <i class="bi bi-building"></i>
           </div>
           <div>
-            <div class="h4 mb-0 fw-bold">{{ $jobs->pluck('company_id')->unique()->count() }}</div>
+            <div class="h4 mb-0 fw-bold"> {{ \App\Models\Company::count() }}</div>
             <small class="text-muted">Empresas activas</small>
           </div>
         </div>
@@ -174,9 +174,7 @@
     </div>
 
     {{-- Paginación --}}
-    <div class="d-flex justify-content-center">
-      {{ $jobs->links() }}
-    </div>
+
   @else
     {{-- Estado vacío --}}
     <div class="text-center py-5">
