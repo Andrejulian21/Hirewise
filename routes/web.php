@@ -64,7 +64,7 @@ Route::middleware(['auth'])->group(function () {
 
             // ahora sí: todo lo que requiera tener company
             Route::middleware(['ensure.role:Empresa'])->group(function () {
-                Route::resource('jobs', \App\Http\Controllers\Company\JobController::class);
+                Route::resource('jobs', JobController::class);
             });
         });
 
@@ -84,28 +84,22 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/jobs/{job}', [JobController::class, 'publicShow'])->name('jobs.show');
 });
 
-Route::get('/candidato/cv/{candidate}', [CvController::class, 'ver'])
-    ->middleware(['auth'])
-    ->name('candidato.cv.ver');
+// -------- ver cv del candidato ----------
+Route::get('/candidato/cv/{candidate}', [CvController::class, 'ver'])->middleware(['auth'])->name('candidato.cv.ver');
 
 
+// -------- Dashboard ----------
 use App\Http\Controllers\DashboardController;
 
-Route::middleware(['auth', 'ensure.role:Empresa'])
-    ->get('/empresa/dashboard', [DashboardController::class, 'empresa'])
-    ->name('empresa.jobs.dashboard');
+Route::middleware(['auth', 'ensure.role:Empresa'])->get('/empresa/dashboard', [DashboardController::class, 'empresa'])->name('empresa.jobs.dashboard');
 
-Route::middleware(['auth', 'ensure.role:Candidato'])
-    ->get('/candidato/dashboard', [DashboardController::class, 'candidato'])
-    ->name('candidatos.dashboard');
+Route::middleware(['auth', 'ensure.role:Candidato'])->get('/candidato/dashboard', [DashboardController::class, 'candidato'])->name('candidatos.dashboard');
 
 
 use App\Http\Controllers\Company\EmployerCandidateController;
-
+// -------- ver perfil del candidato siendo empresa ----------
 Route::middleware(['auth','ensure.role:Empresa'])->prefix('empresa')->name('empresa.')->group(function () {
-    Route::get('candidatos/{candidate}', [EmployerCandidateController::class,'show'])
-        ->whereNumber('candidate')
-        ->name('candidatos.show');
+    Route::get('candidatos/{candidate}', [EmployerCandidateController::class,'show'])->whereNumber('candidate')->name('candidatos.show');
 });
 
 /*Route::get('/whoami', function () {
