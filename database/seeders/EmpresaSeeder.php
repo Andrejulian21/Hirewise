@@ -207,7 +207,17 @@ class EmpresaSeeder extends Seeder
                 ]);
             }
         }
+        $randomCount = 10; // cambia este número si quieres más/menos
+        User::factory($randomCount)->create()->each(function ($user) use ($role) {
+            // asignar rol
+            $user->assignRole($role);
 
+            // crear company falsa ligada a este user usando Company::factory()
+            // Si prefieres crear manualmente, reemplaza la línea por Company::create([...])
+            \App\Models\Company::factory()->for($user, 'user')->create();
+        });
+
+      
         $this->command->info('✅ Empresas, usuarios y vacantes reales creadas correctamente.');
     }
 }
