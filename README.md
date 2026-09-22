@@ -1,61 +1,192 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Hirewise
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Plataforma web de empleo que conecta empresas y candidatos. Las empresas publican vacantes y gestionan postulaciones; los candidatos crean su perfil, suben su hoja de vida y se postulan a las ofertas.
 
-## About Laravel
+Proyecto universitario desarrollado con Laravel 12 y Blade.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Funcionalidades
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Empresa
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Registro y gestión de la cuenta de empresa.
+- CRUD de vacantes (crear, editar, publicar, cerrar, eliminar).
+- Dashboard con resumen de vacantes y postulaciones.
+- Listado público de vacantes con vista de detalle.
+- Visualización del perfil y la hoja de vida de cada candidato postulado.
 
-## Learning Laravel
+### Candidato
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Registro con correo/contraseña o con Google OAuth (rol Empresa o Candidato).
+- Perfil editable.
+- Carga y visualización de hoja de vida (PDF).
+- Postulación a vacantes con un clic.
+- Dashboard con el estado de sus postulaciones.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Autenticación
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Registro y login propios con validación en tiempo real.
+- Login con Google mediante Laravel Socialite.
+- Roles con Spatie Laravel Permission (`Empresa`, `Candidato`) y middleware `ensure.role`.
+- Validación de formularios en el cliente (email, longitud mínima de contraseña, confirmación) e indicador de fuerza de contraseña.
 
-## Laravel Sponsors
+## Stack
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+| Capa | Tecnología |
+|---|---|
+| Backend | Laravel 12, PHP 8.2 |
+| Frontend | Blade, Vite, JavaScript, Bootstrap |
+| Auth | Laravel Socialite (Google OAuth), Spatie Laravel Permission |
+| Documentos | smalot/pdfparser (lectura de HV en PDF) |
+| Base de datos | MySQL / PostgreSQL / SQLite (según `.env`) |
+| Testing | PHPUnit |
 
-### Premium Partners
+## Requisitos
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+- PHP 8.2 o superior con extensiones `mbstring`, `openssl`, `pdo`, `sqlite3`/`mysql` según el motor.
+- Composer 2.
+- Node.js 20 o superior y pnpm o npm.
+- Una base de datos (SQLite para desarrollo rápido o MySQL/PostgreSQL).
+- Credenciales de Google OAuth (solo si se usa login con Google).
 
-## Contributing
+## Instalación
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 1. Clonar el repositorio
 
-## Code of Conduct
+```bash
+git clone https://github.com/Andrejulian21/Hirewise.git
+cd Hirewise
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 2. Instalar dependencias PHP
 
-## Security Vulnerabilities
+```bash
+composer install
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 3. Configurar el entorno
 
-## License
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Ajustar en `.env` la conexión de base de datos:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=hirewise
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+Para desarrollo rápido con SQLite:
+
+```env
+DB_CONNECTION=sqlite
+```
+
+### 4. Migrar la base de datos
+
+```bash
+php artisan migrate
+```
+
+### 5. Instalar dependencias de frontend y compilar
+
+```bash
+pnpm install
+pnpm run dev
+```
+
+En producción:
+
+```bash
+pnpm run build
+```
+
+### 6. Iniciar el servidor
+
+```bash
+php artisan serve
+```
+
+Abrir [http://localhost:8000](http://localhost:8000) en el navegador.
+
+Atajo con todo incluido (servidor, colas, logs y Vite):
+
+```bash
+composer dev
+```
+
+## Configurar Google OAuth (opcional)
+
+1. Crear un proyecto en Google Cloud Console y un cliente OAuth 2.0.
+2. Agregar como URI de redirección autorizada: `http://localhost:8000/auth/google/callback`.
+3. Agregar al `.env`:
+
+```env
+GOOGLE_CLIENT_ID=tu-client-id
+GOOGLE_CLIENT_SECRET=tu-client-secret
+GOOGLE_REDIRECT_URI=http://localhost:8000/auth/google/callback
+```
+
+El rol se elige en el login/registro y se envía como `?rol=Empresa|Candidato` al endpoint `/auth/google/redirect`.
+
+## Uso
+
+1. Registrarse como Empresa o como Candidato (formulario o Google).
+2. Como Empresa: completar los datos de la compañía en `/empresa/company` y crear vacantes en `/empresa/jobs`.
+3. Como Candidato: completar el perfil en `/candidato/perfil/editar`, subir la HV y postularse desde el listado `/jobs`.
+4. Como Empresa: revisar postulaciones en el dashboard y abrir el perfil/CV de cada candidato.
+
+## Estructura del proyecto
+
+```
+app/
+├── Http/Controllers/
+│   ├── Auth/            # Registro, login, Socialite (Google)
+│   ├── Company/         # Vacantes, cuenta de empresa, vista de candidatos
+│   ├── Candidate/       # Perfil, postulaciones, visualización de CV
+│   └── DashboardController.php
+├── Models/              # User, Company, Job, Application, Candidate...
+├── Policies/            # Autorización por rol
+└── Services/            # Lógica de negocio (p. ej. lectura de PDF)
+resources/
+├── views/               # Blade (auth, empresa, candidato, welcome)
+└── js/                  # auth.js (validación, fuerza de contraseña), welcome.js
+routes/web.php           # Rutas públicas, auth y grupos por rol
+database/migrations/     # Esquema de usuarios, empresas, vacantes, postulaciones
+```
+
+## Scripts disponibles
+
+| Comando | Descripción |
+|---|---|
+| `composer setup` | Instala dependencias, genera key, migra y compila assets |
+| `composer dev` | Servidor + colas + logs + Vite en paralelo |
+| `composer test` | Limpia config y ejecuta la suite de tests |
+| `php artisan test` | Ejecuta PHPUnit |
+| `pnpm run dev` | Servidor de desarrollo de Vite |
+| `pnpm run build` | Compila assets para producción |
+
+## Testing
+
+```bash
+php artisan test
+```
+
+## Estado y próximos pasos
+
+- [x] Auth propia + Google OAuth con roles
+- [x] CRUD de vacantes y cuenta de empresa
+- [x] Perfil de candidato y postulaciones
+- [x] Visualización de HV (PDF)
+- [ ] Filtros y búsqueda avanzada de vacantes
+- [ ] Notificaciones por correo al cambiar el estado de una postulación
+- [ ] Paginación y pruebas de los flujos principales
+
+## Licencia
+
+Proyecto académico. Todos los derechos reservados.
